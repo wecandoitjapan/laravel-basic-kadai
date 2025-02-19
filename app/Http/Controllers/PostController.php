@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller{
     public function index() {
-        return view('posts.index');
-    }
+        // postsテーブルからすべてのデータを取得し、変数$postsに代入する
+        $posts = DB::table('posts')->get();
+
+        // 変数$productsをproducts/index.blade.phpファイルに渡す
+        return view('posts.index', compact('posts'));
+    }    
 }
