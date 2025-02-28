@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\posts;
+use App\Models\Post;
 
 class PostController extends Controller{
     public function index() {
@@ -17,10 +17,32 @@ class PostController extends Controller{
     }
 
     public function show($id) {
-        // URL'/products/{id}'の'{id}'部分と主キー（idカラム）の値が一致するデータをproductsテーブルから取得し、変数$productに代入する
-        $posts = posts::find($id);
+        // URL'/posts/{id}'の'{id}'部分と主キー（idカラム）の値が一致するデータをpostテーブルから取得し、変数$postに代入する
+        $post = Post::find($id);
 
         // 変数$productをproducts/show.blade.phpファイルに渡す
-        return view('posts.show', compact('posts'));
+        return view('posts.show', compact('post'));
     }
+
+    // 課題26
+    public function create() {
+        return view('posts.create');
+    } 
+
+    public function store(Request $request) {
+        // バリデーションを設定する
+        $request->validate([
+            'title' => 'required|max:20',
+            'content' => 'required|max:200'
+        ]);
+
+        // フォームの入力内容をもとに、テーブルにデータを追加する
+        $posts = new Post();
+        $posts->title = $request->input('title');
+        $posts->content = $request->input('content');
+        $posts->save();
+
+        // リダイレクトさせる
+        return redirect("/posts/{$post->id}");
+    }      
 }
