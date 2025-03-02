@@ -43,6 +43,6 @@ class PostController extends Controller{
         $posts->save();
 
         // リダイレクトさせる
-        return redirect("/posts/{$post->id}");
+        return redirect("/posts");
     }      
 }
